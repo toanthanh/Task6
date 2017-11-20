@@ -14,7 +14,7 @@
  </li>
  */
 // After the loop print the HTML into <ul> element using innerHTML.
-const showImages = () => {
+const showImages = (fn) => {
   const ul = document.querySelector('ul');
 
   fetch('images.json').then((response) => {
@@ -32,8 +32,43 @@ const showImages = () => {
           </figure>
         </li>`;
     });
+   
+    html += 
+        `<div id="myModal" class="modal">
+              <span class="close">&times;</span>
+              <img class="modal-content" id="img01">
+        </div>`
+    
     ul.innerHTML = html;
+   
+   fn();
   });
 };
 
-showImages();
+var addEvent = function() {
+    anchors = document.getElementsByClassName('imageAnchor');
+    
+    console.log(anchors[0]);
+
+    var modal = document.getElementById('myModal')
+    var modalImg = document.getElementById('img01');
+
+    for (var i = 0; i < anchors.length; i++) {
+        var href = anchors[i].href;
+        anchors[i].addEventListener('click', function(event) {
+            modal.style.display = 'block';
+            modalImg.src = href;
+            event.preventDefault();
+        });
+    }
+
+    var span = Array.prototype.slice.call(document.getElementsByClassName('close'))[0];
+
+    console.log(span);
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+}
+
+showImages(addEvent);
